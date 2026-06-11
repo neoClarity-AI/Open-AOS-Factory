@@ -2,7 +2,7 @@
 title: AOS Factory Generation Runbook
 file_type: design_spec
 project: Script to Build Agentic OS Factory
-spec_version: 1.0.6
+spec_version: 1.0.2
 created_date: 2026-06-02
 last_updated: 2026-06-10
 status: design_ready_for_generation_planning
@@ -15,25 +15,27 @@ Part of the AOS Factory Design Specification document set. The canonical design 
 
 ---
 
-# 33. Final Consolidation Decisions
+# 33. Design Governance Rules
 
-The user accepted final consolidation recommendations.
-
-Approved consolidation defaults:
+These rules govern how the design specification and generation runbook are
+interpreted and maintained going forward.
 
 ```text
-- Treat Part 4 as the authoritative design handoff.
-- Preserve all completed decisions unless the user explicitly modifies them.
-- Reconcile older sections with later addenda where Part 4 decisions supersede earlier open statuses.
-- Do not rewrite the full design spec unless the user asks for a cleaned consolidated version.
-- Produce a compact contradiction and gap check before builder generation.
-- Produce a ready-to-generate checklist.
-- Produce a proposed builder generation scope.
-- Require the user to type exactly Proceed before creating any actual AOS Factory files.
-- Do not generate a user-specific AOS instance during the first generation phase.
-- Generate only the reusable AOS Factory framework when authorized.
-- Treat the Agent Maker Agent reference as a design note, not as authorization to add a new agent to the initial roster.
+- The most recent confirmed decisions are authoritative. Where they conflict
+  with earlier sections, the later decisions must govern.
+- A completed decision must be preserved unless the user explicitly changes it.
+- The full design spec must not be rewritten unless the user explicitly
+  requests a consolidated version.
+- The Agent Maker Agent reference is a design note only and must not be
+  treated as authorization to add an agent to the initial roster.
+- The revision history and spec_version follow the format and increment rule
+  in the specification's "Revision History" section: one increment and one
+  consolidated entry per completed maintenance action.
 ```
+
+Operational gates derived from these rules — the contradiction/gap check,
+ready-to-generate checklist, builder generation scope, framework-only build,
+and the exact `Proceed` approval — are enforced in Sections 34 and 35.
 
 ---
 
@@ -132,7 +134,7 @@ No AOS instance should be generated in this first generation phase unless the us
 
 The AOS Factory build process consists of two separate, sequentially gated workflows. `Proceed` is the only exact-string command (Sections 1.6.8, 16.6); each `Proceed` is action-specific (Section 2.5) and authorizes only the action described immediately before it, so finalizing the consistency review never auto-triggers generation.
 
-### Workflow 1 — Design Readiness Review
+### 36.1 Design Readiness Review
 
 When the user requests a "Design Readiness Review", using this workflow.
 
@@ -149,9 +151,9 @@ Read the source file `design-spec/aos-factory-design-specification.md`.
 
 Do not add, modify or delete any files unless the user types exactly: Proceed.
 ```
-### Workflow 2 — AOS Factory Generation
+### 36.2 AOS Factory Generation
 
-When the user requests to "Build the factory", using this workflow.
+When the user requests to "Build the factory" or "Generate the factory", using this workflow.
 
 ```
 Read the source file `design-spec/aos-factory-design-specification.md`.
@@ -165,3 +167,10 @@ Read the source file `design-spec/aos-factory-design-specification.md`.
 Do not generate actual AOS Factory files unless the user types exactly: Proceed.
 ```
 
+### 36.3 Claude Plugin Generation
+
+When the user requests to "Build the plugin" or "Generate the plugin", using this workflow.
+
+```
+Insert workflow here.
+```

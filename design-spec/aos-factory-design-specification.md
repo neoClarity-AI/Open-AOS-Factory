@@ -4,7 +4,7 @@ file_type: design_spec
 project: Script to Build Agentic OS Factory
 created_date: 2026-06-02
 last_updated: 2026-06-10
-spec_version: 1.0.6
+spec_version: 1.0.2
 status: design_ready_for_generation_planning
 important_constraint: Do not generate actual AOS Factory files unless the user explicitly types exactly Proceed.
 ---
@@ -40,20 +40,22 @@ This specification is maintained as a small set of companion files in this folde
 ```text
 aos-factory-design-specification.md   - the canonical design (this file), Sections 1-32
 aos-factory-generation-runbook.md     - build, generation scope, and handoff procedure (Sections 33-37)
-aos-factory-consistency-history.md    - dated revision and consistency-resolution history
+aos-factory-revision-history.md       - dated revision and consistency-resolution history
 ```
 
 The canonical specification remains the single source of truth (Section 1.6.1); the companion files are extracted from it for readability and are governed by the same `Proceed` safety gate.
 
 ## Revision History
 
-The full revision history of this specification — including all dated Design Consistency Resolution passes — is maintained in a companion file:
+The full revision history of this specification — including all dated Design Consistency Resolution cycles — is maintained in a companion file:
 
 ```text
-aos-factory-consistency-history.md
+aos-factory-revision-history.md
 ```
 
-Entries there are maintained in reverse chronological order (newest first); new entries are added at the top.
+Entries there are maintained in reverse chronological order (newest first); new entries are added at the top. Each release is a single entry headed `## <spec_version> — <title> (<date>)`, with resolved items as a numbered list whose bold lead-in names the issue. A version table at the top of the file maps each `spec_version` to its date and a one-line summary.
+
+`spec_version` increments once per completed maintenance action. A full §36.1 consistency-review cycle is one increment and one consolidated entry — not one per re-read iteration, however many iterations the loop takes. A structural change (for example, a document restructure) is its own separate increment.
 
 ---
 
