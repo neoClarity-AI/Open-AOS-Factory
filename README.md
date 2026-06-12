@@ -18,12 +18,20 @@ An Agentic Operating System is not a piece of software you install — it is a s
 
 ---
 
-## Quick Start
+## Pick Your Entry Point
+
+You can adopt the factory at whatever depth suits you:
+
+- **A Claude plugin** — easy install, no clutter.
+- **A prebuilt factory** — fork the full repo to run it directly (built with Claude Opus 4.8, and can be rebuilt with newer models as they ship).
+- **The design spec** — this is the best way to modify the factory itself and contribute to the open source project. Only pull requests for the design spec will be considered.
+
+### Quick Start with the Claude Plugin
 
 These steps are written for Claude Cowork users. Claude Code users can follow the same flow from the terminal.
 
-1. **Install the plugin.** Open Cowork settings, go to Plugins, and install the **Open AOS Factory** plugin. If you received a `.plugin` zip file, use the "Install from file" option (requires Claude Code v2.1.128+).
-2. **Open a new session** in your workspace folder.
+1. **Install the plugin.** Go to the plugin repo and follow the instructions there: [https://github.com/neoClarity-AI/neoClarity-Plugins/tree/main/aos-factory](https://github.com/neoClarity-AI/neoClarity-Plugins/tree/main/aos-factory). 
+2. **Open a new session** in your **AOS Workspace** project, then issue the prompt: Build an AOS.
 3. **Start the build.** Type: `Build my AOS` — Claude will open the master builder and begin the setup interview.
 4. **Answer the interview questions.** The builder acts as an executive coach and collaborator, asking about your work style, the agents you want, and how you want the system to behave. It recommends sensible defaults and documents decisions as it goes.
 5. **Review the proposed files.** Before anything is created, Claude shows you exactly what it plans to write.
@@ -46,6 +54,20 @@ These steps are written for Claude Cowork users. Claude Code users can follow th
 **Single Responsibility Principle.** Each agent has a defined purpose, a list of explicit non-responsibilities, and clear escalation rules. The Chief of Staff coordinates and routes; it does not absorb work that belongs to a specialized agent.
 
 **Works for personal and professional use.** The factory is designed as a reusable template. A user can build a personal AOS, a work AOS, or both — as sibling instances in the same workspace (see Repository Structure below). The user can build as many AOS instances as they need, with each specialized for a specific purpose. A routing mechanism activates the appropriate AOS and agents for a specific task.
+
+## Key Benefits
+
+**You can trust it with real work.** Governance comes first, not as an afterthought. Before any productive agent is added, four governance agents — security, memory, coordination, and quality review — are already in place. The system never deletes, overwrites, or moves your files on its own; anything consequential waits for you to type one word: `Proceed`.
+
+**It's built for non-technical people.** Setup is an interview, not a config file. You talk; it builds. There's no command grammar to memorize — you trigger things by plain intent ("Start my day," "Process my inbox").
+
+**It documents and improves itself.** Every system generates its own plain-language user guide, and a built-in review agent keeps it clean daily, healthy monthly, and aligned with your goals quarterly. It gets better on a schedule instead of rotting.
+
+**It grows with you.** Run one AOS or many — work, personal, a client project — side by side, with smart routing that always picks the right one and never mixes their memories. Add new agents anytime without redesigning anything.
+
+**It's designed to be forked and extended.** Everything is plain markdown built from standardized schemas. The whole system is generated from one canonical design spec, so the design, the docs, and even this pitch can't quietly drift apart. That same discipline is what makes outside contribution easy.
+
+**It's portable.** Tuned for Claude Cowork, it runs in Claude Code today and adapts to other LLMs, because it avoids platform lock-in wherever a portable approach exists.
 
 ---
 
@@ -152,8 +174,12 @@ Contributions to the **Open AOS Factory** follow the same governance model the f
 1. Open `design-spec/aos-factory-design-specification.md` and identify the section(s) your change affects.
 2. Draft the proposed revision and discuss it in a Planning mode session (`pmode` at the start of your Claude session). Claude will not create or modify any files in this mode.
 3. Once the revision is agreed, type `Proceed` to authorize the spec update.
-4. Identify which builder file(s) in `builders/` are affected by the spec change and regenerate them (one builder at a time, each gated by `Proceed`).
-5. Update `dist/` by rebuilding the plugin package, bump the version in `plugin.json`, and add an entry to `dist/aos-factory/builder-changelog.md`.
+4. Test your changes with these commands:
+
+   Rebuild the factory
+
+   Create a new AOS
+5. When ready, submit your design spec via a pull request. Only pull requests for the design spec will be considered.
 
 **What not to do:** Do not edit builder files in `builders/` or skill files in `dist/aos-factory/skills/` directly without first updating the spec. The spec is the design record; a builder that diverges from it is a bug.
 
