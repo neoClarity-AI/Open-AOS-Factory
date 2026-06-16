@@ -119,7 +119,7 @@ Open AOS Factory/                ← project root
 │   └── logs/
 │       └── factory-routing-decision-log.md
 │
-└── plugin/                      ← packaged plugin (what gets distributed)
+└── plugin/                      ← packaged plugin (for Claude Cowork users)
     └── aos-factory/
         ├── .claude-plugin/
         │   └── plugin.json      ← plugin manifest
