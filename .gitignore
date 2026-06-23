@@ -14,6 +14,10 @@ Thumbs.db
 # Logs that may contain personal data
 *.log
 
-# Temp/scratch files
+# Temp/scratch/zip files
 *.tmp
 *.bak
+*.zip
+
+# Internal documents
+ROADMAP.md

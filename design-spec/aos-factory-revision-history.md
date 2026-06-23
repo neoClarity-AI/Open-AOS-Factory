@@ -2,9 +2,9 @@
 title: AOS Factory Design Specification — Revision History
 file_type: design_spec
 project: Script to Build Agentic OS Factory
-spec_version: 1.0.5
+spec_version: 1.1.0
 created_date: 2026-06-02
-last_updated: 2026-06-11
+last_updated: 2026-06-21
 status: design_ready_for_factory_generation
 ---
 
@@ -14,12 +14,13 @@ Part of the AOS Factory Design Specification document set. The canonical design 
 
 Entries below are in reverse chronological order (newest first).
 
-| spec_version | Date       | Change |
-|--------------|------------|--------|
+| spec_version | Date       | Change                                                       |
+| ------------ | ---------- | ------------------------------------------------------------ |
+| 1.1.0        | 2026-06-21 | The first of several improvements inspired by the Hermes Agent (https://github.com/NousResearch/hermes-agent) Continuous learning loop added: §17.10 Learning Capture Workflow (event-triggered candidate→confirmed lifecycle); §6 file list, §6.1, §7.4 (Memory + Review), §17.3–17.4, and §25 updated; capture is Level 1 append, promotion is Level 2 and data-file-only per the §14.8 drift invariant |
 | 1.0.5        | 2026-06-11 | Version model simplified: `builder_version`/`schema_version` collapsed into `spec_version`; `aos_version` assignment/increment rule + Review-Agent ownership added; definition/data file definitions + drift invariant added; AOS User Guide reclassified as a regenerable projection |
 | 1.0.4        | 2026-06-11 | §36.3 Claude Plugin Generation workflow authored; §28.2 aligned to the shipped plugin (examples/ → templates/, README.md added) |
 | 1.0.3        | 2026-06-11 | §36.1 Design Readiness Review cycle — checklists verified; §34.2 item 1 dispositioned N/A; §28.1 step 3 citation corrected; no functionality-impacting inconsistencies found |
-| 1.0.2        | 2026-06-10 | Document restructure — light split into the 3-file set |
+| 1.0.2        | 2026-06-10 | Document restructure — light split into the 3-file set       |
 | 1.0.1        | 2026-06-10 | Design consistency resolution cycle — 16 items, surfaced across 5 re-read iterations of the §36.1 loop |
 | 1.0.0        | 2026-06-02 | Baseline design accepted; initial consistency resolution (4 items) |
 
@@ -28,6 +29,22 @@ Entries below are in reverse chronological order (newest first).
 These entries record completed activities that did not change the design content and therefore did not increment `spec_version` (per the content-only versioning principle, §1.6.1).
 
 - **2026-06-11 — §36.1 Design Readiness Review against spec_version 1.0.5.** All §34.1 (20) and §34.2 (5) checklist items were reset, independently re-verified, and re-marked Done; the canonical design (Sections 1–32) was reviewed for logical consistency. No functionality-impacting inconsistencies were found and no design content changed, so no version increment was made. One non-blocking observation was noted and dispositioned "leave as-is" by the user: §27's enumerated agent-completeness list does not name the per-agent Build Summary (§13/§15.4), which is still produced via the §12 Handoff Summary step.
+
+## 1.1.0 — Continuous Learning Loop (2026-06-21)
+
+A continuous, event-triggered learning loop was added so the AOS improves in-the-moment, not only on the review cadence. The change is additive and non-destructive; no agent roster or path convention was removed. Versioned as a MINOR bump to reflect the significance of the sequence of edits. This is Phase 0 of the Hermes-comparison roadmap (`/ROADMAP.md`).
+
+1. **§17.10 Learning Capture Workflow authored** — a new global workflow (`/workflows/learning-capture-workflow.md`) following the §16.3 schema. It defines event triggers (novel/multi-step task done, user correction or recovered failure, recurring pattern, explicit user cue), a candidate-capture procedure, decision points, approval gates, escalation triggers, and completion criteria. Primary owner: Memory Agent, with the Chief of Staff invoking it at task handoff and the Review Agent consolidating on cadence. Added to the §6 global-files list.
+
+2. **Candidate → confirmed lifecycle defined (§6.1)** — learnings now have two stages: *candidate* learnings captured in-the-moment (appended to the owning agent's `[agent-name]-learnings.md` under `## Candidate Learnings`; a Level 1 safe autonomous append per §3.3) and *confirmed* learnings promoted by the Review Agent during weekly/monthly consolidation (under `## Confirmed Learnings`, registered in `/memory/agent-learnings-index.md`). The index gains a status field (candidate | confirmed | retired) and is named the retrieval surface.
+
+3. **Memory and Review Agent responsibilities updated (§7.4)** — the Memory Agent owns the learning-capture loop (candidate intake, the agent-learnings index, candidate hygiene); the Review Agent owns learning consolidation (weekly merge/prune/promote; deeper monthly consolidation and template proposals).
+
+4. **Review rhythms wired in (§17.3, §17.4, §25)** — candidate-learning consolidation added to the weekly review scope; deeper consolidation and template promotion added to the monthly review; two rhythm entries added to §25 (post-task capture event-triggered; lightweight-weekly / deeper-monthly consolidation).
+
+5. **Governance preserved** — capture is Level 1 (append only, never overwrite); promotion that creates a `/templates/` artifact or changes behavior is Level 2 (requires `Proceed`, §3.2). Per the §14.8 drift invariant, the loop produces data-file artifacts only and must not modify framework-derived agent definition files; structural agent changes route to the builder/spec path.
+
+Follow-on (not part of this spec change): regenerate `build-memory-agent`, `build-review-agent`, and `build-aos`, then the plugin, and run the §27 validation pass.
 
 ## 1.0.5 — Version Model Simplification and Drift Control (2026-06-11)
 

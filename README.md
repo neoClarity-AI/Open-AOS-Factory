@@ -42,16 +42,28 @@ You can adopt the factory at whatever depth suits you:
 
 ### Quick Start with the Claude Plugin
 
-These steps are written for Claude Cowork users. Claude Code users can follow the same flow from the terminal.
+If you're using Claude Cowork, follow the instructions here: https://github.com/neoClarity-AI/neoClarity-Plugins/tree/main/aos-factory 
 
-1. **Install the plugin.** Go to the plugin repo and follow the instructions there: [https://github.com/neoClarity-AI/neoClarity-Plugins/tree/main/aos-factory](https://github.com/neoClarity-AI/neoClarity-Plugins/tree/main/aos-factory). 
-2. **Open a new session** in your **AOS Workspace** project, then issue the prompt: Build an AOS.
-3. **Start the build.** Type: `Build my AOS`. Claude will open the master builder and begin the setup interview.
-4. **Answer the interview questions.** The builder acts as an executive coach and collaborator, asking about your work style, the agents you want, and how you want the system to behave. It recommends sensible defaults and documents decisions as it goes.
-5. **Review the proposed files.** Before anything is created, Claude shows you exactly what it plans to write.
-6. **Type `Proceed`** to authorize file creation. Nothing is written until you do.
-7. Review the **AOS User Guide** (`docs/aos-user-guide.html`) in the `docs` folder of the AOS instance.
-8. **Add more agents any time.** Once your AOS is running, you can add optional productive agents by asking Claude to build them (e.g., `Add an Inbox Agent to my AOS`).
+If you're using VS Code with Claude Code, follow these instructions:
+
+**Using VS Code**
+
+- **Install Claude on VS Code.** Instructions here: https://code.claude.com/docs/en/vs-code
+- **Create a folder for the AOS.**  File -> Open Folder... -> New Folder. You can name it anything you like. For these instructions, lets call it **AOS Workspace**.
+- **Install the aos-factory plugin.** In a Claude Code terminal session, enter these commands:
+```
+/plugin marketplace add https://github.com/neoClarity-AI/neoClarity-Plugins
+/plugin install aos-factory@neoclarity-plugins
+```
+
+- **Create an AOS instance**. In a Claude Code terminal session, enter this command:
+
+```
+/biuld-aos help
+```
+
+- Review the overview to familiarize yourself with the skill, then proceed with the interview to create your first AOS instance.
+- You can begin issuing commands to your new agents. See the **AOS User Guide** (`docs/aos-user-guide.html`) in the `docs` folder of your new AOS instance for details.
 
 ---
 
