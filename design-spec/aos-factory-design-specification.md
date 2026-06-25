@@ -3,8 +3,8 @@ title: AOS Factory Design Specification
 file_type: design_spec
 project: Script to Build Agentic OS Factory
 created_date: 2026-06-02
-last_updated: 2026-06-21
-spec_version: 1.1.0
+last_updated: 2026-06-11
+spec_version: 1.0.5
 status: design_ready_for_factory_generation
 important_constraint: Do not generate actual AOS Factory files unless the user explicitly types exactly Proceed.
 ---
@@ -540,7 +540,6 @@ During setup, `/builders/build-aos.md` should create these global files when aut
 /workflows/project-kickoff-workflow.md
 /workflows/decision-capture-workflow.md
 /workflows/memory-review-workflow.md
-/workflows/learning-capture-workflow.md
 /templates/status-report-template.md
 /templates/project-brief-template.md
 /templates/decision-entry-template.md
@@ -560,15 +559,6 @@ The approved approach is:
 ```
 
 The global file is an index or routing map, not a centralized dumping ground for every agent’s learning.
-
-Learnings follow a two-stage lifecycle:
-
-- Candidate learnings are captured in-the-moment by any agent via the learning-capture workflow (Section 17.10) and appended to that agent’s own `/agents/[agent-name]-agent/memory/[agent-name]-learnings.md` under a `## Candidate Learnings` heading. This append is a safe autonomous action (Section 3.3) — new content only, never overwriting prior entries.
-- Confirmed learnings are produced when the Review Agent consolidates candidates during the weekly and monthly reviews (Sections 17.3–17.4): it merges, prunes, and promotes worthwhile candidates under a `## Confirmed Learnings` heading and registers them in `/memory/agent-learnings-index.md`.
-
-The index is the retrieval surface: it records, per learning, the owning agent, a one-line summary, status (candidate | confirmed | retired), and a link to the source entry, so any agent can find prior learnings without reading every file.
-
-Promotion that creates a reusable artifact (a new `/templates/` file) or that would change behavior is approval-gated (Section 3.2). Per the drift invariant (Section 14.8), the learning loop produces data-file artifacts only and must not modify framework-derived agent definition files; structural changes to an agent go through the builder and the spec, not the learning loop.
 
 ---
 
@@ -636,14 +626,14 @@ Security Agent
 Owns permission rules, approval requirements, access boundaries, the tool access matrix, and safety checks.
 
 Memory Agent
-Owns shared memory structure, memory hygiene, preference capture, and cross-agent memory routing. Also owns the learning-capture loop (Section 17.10): the intake of candidate learnings, the agent-learnings index (/memory/agent-learnings-index.md), and candidate-learning hygiene.
+Owns shared memory structure, memory hygiene, preference capture, and cross-agent memory routing.
 
 Chief of Staff Agent
 Owns orchestration, routing, prioritization, conflict resolution, and user-facing coordination.
 Also a joint owner of the AOS Workspace router (/aos-router.md): every AOS instance's Chief of Staff Agent is a joint owner of the router that resolves the active target before any workflow runs. Each must honor router resolution (ask-don't-guess; never silently pick or merge instances) and log instance-routing choices to its own /agents/chief-of-staff-agent/logs/chief-of-staff-decision-log.md.
 
 Review Agent
-Owns retrospectives, system improvement, weekly reviews, decision audits, AOS refinement, and the AOS User Guide (/docs/aos-user-guide.html), which it regenerates during the monthly review. It also owns learning consolidation (Section 17.10): during the weekly review it consolidates candidate learnings (merge, prune, promote to confirmed), and during the monthly review it performs deeper consolidation and may propose reusable templates from confirmed learnings, subject to the user typing Proceed.
+Owns retrospectives, system improvement, weekly reviews, decision audits, AOS refinement, and the AOS User Guide (/docs/aos-user-guide.html), which it regenerates during the monthly review.
 Also owns and reconciles the instance version (aos_version in /aos-manifest.md): it reconciles the value against /logs/change-log.md during the monthly review and verifies it in its completeness audit, while breaking/MAJOR bumps are applied at the time of change (Section 14.3.1). It refines and regenerates only data files and projections; per the drift invariant (Section 14.8) it does not modify framework-derived definition files.
 ```
 
@@ -1701,7 +1691,7 @@ Create:
 Purpose:
 
 ```text
-Review commitments, projects, decisions, unresolved items, agent performance, stale memory signals, candidate learnings (merge, prune, promote), and next-week priorities.
+Review commitments, projects, decisions, unresolved items, agent performance, stale memory signals, and next-week priorities.
 ```
 
 Approved review question:
@@ -1740,7 +1730,7 @@ Stale project review is part of monthly review.
 
 Memory hygiene receives lightweight weekly review and deeper monthly review.
 
-The Review Agent regenerates the AOS User Guide (`/docs/aos-user-guide.html`) as part of the monthly review, re-projecting it from current instance data and preserving its embedded Change Log (Section 16.6). It also reconciles the instance `aos_version` in `/aos-manifest.md` against `/logs/change-log.md` at this time (Section 14.3.1). During the monthly review the Review Agent also performs deeper consolidation of confirmed learnings and may propose reusable templates from them, subject to the user typing Proceed (Section 17.10).
+The Review Agent regenerates the AOS User Guide (`/docs/aos-user-guide.html`) as part of the monthly review, re-projecting it from current instance data and preserving its embedded Change Log (Section 16.6). It also reconciles the instance `aos_version` in `/aos-manifest.md` against `/logs/change-log.md` at this time (Section 14.3.1).
 
 Primary owner:
 
@@ -1860,86 +1850,6 @@ Primary owner:
 
 ```text
 Memory Agent, with Review Agent support.
-```
-
-## 17.10 Learning Capture Workflow
-
-Create:
-
-```text
-/workflows/learning-capture-workflow.md
-```
-
-Purpose:
-
-```text
-Capture a reusable learning the moment it occurs — after a novel or multi-step task, after a user correction, or when a repeated pattern is noticed — so the system improves continuously rather than only on the review cadence.
-```
-
-When to Use:
-
-```text
-- A non-trivial or first-of-its-kind task was completed.
-- The user corrected the agent, or an attempt failed and was recovered.
-- The same kind of request has recurred (a pattern worth proceduralizing).
-- The user explicitly cues it ("remember how to do this", "save this approach").
-```
-
-Inputs:
-
-```text
-- The just-completed task, its outcome, and any correction or failure.
-- Relevant prior entries from the owning agent's learnings file and the agent-learnings index (to avoid duplicates).
-```
-
-Outputs:
-
-```text
-- A new candidate-learning entry appended to /agents/[agent-name]-agent/memory/[agent-name]-learnings.md ("## Candidate Learnings"), using the memory-entry template.
-- An index row added to /memory/agent-learnings-index.md (status: candidate).
-```
-
-Steps:
-
-```text
-1. Detect a trigger (above). The owning agent runs this on its own work; the Chief of Staff may invoke it at task handoff.
-2. Check the index and the agent's learnings file for an existing match; if found, note the recurrence on that entry instead of creating a duplicate.
-3. Write the candidate as: situation -> what worked / what to avoid -> reusable rule.
-4. Append it (never overwrite) and add the index row.
-5. Defer any promotion, template creation, or behavior change to the Review Agent's weekly/monthly consolidation.
-```
-
-Decision Points:
-
-```text
-- Is this generalizable, or a one-off? Capture only generalizable learnings.
-- Duplicate of an existing entry? Increment recurrence instead of re-adding.
-```
-
-Approval Gates:
-
-```text
-- Capture (append candidate + index row): Level 1, no approval (Section 3.3).
-- Promotion that creates a /templates/ artifact or changes behavior: Level 2, requires Proceed (Section 3.2), handled in the review workflows.
-```
-
-Escalation Triggers:
-
-```text
-- A candidate implies a structural change to an agent's definition -> escalate to the builder/spec path (do not edit definition files here; Section 14.8).
-- A candidate touches permissions or tool access -> route to the Security Agent.
-```
-
-Completion Criteria:
-
-```text
-- Candidate entry and index row exist; no existing entry was overwritten; any required escalation was raised.
-```
-
-Primary owner:
-
-```text
-Memory Agent, with the Chief of Staff Agent invoking it at task handoff and the Review Agent consolidating on cadence.
 ```
 
 ---
@@ -2250,8 +2160,6 @@ Approved rhythms:
 - Stale project review as part of monthly review
 - Memory hygiene as lightweight weekly review plus deeper monthly review
 - AOS User Guide refresh as part of monthly review
-- Post-task learning capture (event-triggered)
-- Candidate-learning consolidation: lightweight weekly, deeper monthly
 ```
 
 Approved review scopes:
