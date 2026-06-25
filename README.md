@@ -1,5 +1,9 @@
 # Open AOS Factory
 
+## Why This Exists
+
+The Claude Code and Cowork ecosystem has no shortage of tooling. What it lacks is a governance-first reference implementation: a safe-by-default way for a non-technical person to assemble and actually trust a team of AI agents. The Open AOS Factory is built around that gap. Governance comes first, not as an afterthought. Every consequential action waits on a one-word human approval (`Proceed`), and the entire system is generated from a single canonical specification, so the design, the docs, and the shipped code cannot quietly drift apart.
+
 ## Overview
 
 The **Open AOS Factory** builds and maintains one or more **Agentic Operating System (AOS)** instances. Each AOS is a personal or professional AI standardized operating environment composed of specialized agents, workflows, memory files, templates, and configuration files that work together to create a complete agentic system. The factory guides both technical and non-technical users through setup via a conversational interview, produces all files automatically once approved, and can add or rebuild individual agents at any time. Although this particular implementation is configured to run on Claude Cowork (for non-technical users) or Claude Code (for developers), it can be easily ported to work with Codex and possibly other platforms.
@@ -195,6 +199,12 @@ The canonical source of truth for the factory is `design-spec/aos-factory-design
 The spec is also the correct starting point for any change to the factory itself. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution workflow.
 
 ---
+
+## Maintainer and Project Status
+
+The Open AOS Factory is built and actively maintained by Martin Danner, founder of neoClarity, with decades in software engineering, technical training, and IT management. neoClarity is a human-centered AI learning community focused on making capable AI accessible to non-technical professionals.
+
+The project is under active development with ongoing commits on `main`, a published architecture and a spec-driven contribution model, and labeled good-first-issues for new contributors. The reference factory was built with Claude Opus 4.8 and is designed to be rebuilt as newer models ship. Issues and design-spec pull requests are welcome.
 
 ## Contributing
 
